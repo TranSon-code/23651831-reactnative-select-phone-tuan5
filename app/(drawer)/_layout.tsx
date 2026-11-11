@@ -21,7 +21,7 @@ export default function DrawerLayout() {
             drawerLabel: 'Home',
             title: 'Trang chủ',
             drawerIcon: ({ color, size }) => (
-              <Ionicons name="home-outline" size={size} color={color} />
+              <Ionicons name="home-outline" size={size} color={color as string} />
             ),
           }}
         />
@@ -31,7 +31,7 @@ export default function DrawerLayout() {
             drawerLabel: 'Profile',
             title: 'Hồ sơ người dùng',
             drawerIcon: ({ color, size }) => (
-              <Ionicons name="person-outline" size={size} color={color} />
+              <Ionicons name="person-outline" size={size} color={color as string} />
             ),
           }}
         />
@@ -41,7 +41,7 @@ export default function DrawerLayout() {
             drawerLabel: 'Settings',
             title: 'Cài đặt hệ thống',
             drawerIcon: ({ color, size }) => (
-              <Ionicons name="settings-outline" size={size} color={color} />
+              <Ionicons name="settings-outline" size={size} color={color as string} />
             ),
           }}
         />
