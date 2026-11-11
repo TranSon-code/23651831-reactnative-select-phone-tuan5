@@ -1,7 +1,15 @@
 import React from 'react';
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
-const sampleProducts = [
+interface ProductItem {
+  id: string;
+  name: string;
+  price: string;
+}
+
+const productsData: ProductItem[] = [
   { id: '1', name: 'Điện Thoại Vsmart Joy 3', price: '1.790.000 đ' },
   { id: '2', name: 'Điện Thoại Vsmart Live 4', price: '2.490.000 đ' },
   { id: '3', name: 'Điện Thoại Vsmart Aris Pro', price: '3.990.000 đ' },
@@ -9,18 +17,34 @@ const sampleProducts = [
   { id: '5', name: 'Điện Thoại Vsmart Active 3', price: '2.190.000 đ' },
 ];
 
-export default function HomeScreen() {
+export default function ProductsTab() {
+  const router = useRouter();
+
+  const handlePressItem = (item: ProductItem) => {
+    router.push({
+      pathname: '/screens/product-details',
+      params: { id: item.id, name: item.name, price: item.price },
+    });
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={sampleProducts}
+        data={productsData}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>{item.name}</Text>
-            <Text style={styles.cardPrice}>{item.price}</Text>
-          </View>
+          <TouchableOpacity
+            style={styles.card}
+            activeOpacity={0.7}
+            onPress={() => handlePressItem(item)}
+          >
+            <View style={styles.info}>
+              <Text style={styles.title}>{item.name}</Text>
+              <Text style={styles.price}>{item.price}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#757575" />
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -35,9 +59,12 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    elevation: 2,
   },
-  cardTitle: { fontSize: 16, fontWeight: 'bold', color: '#212121' },
-  cardPrice: { fontSize: 14, color: '#D32F2F', fontWeight: 'bold', marginTop: 6 },
+  info: { flex: 1 },
+  title: { fontSize: 16, fontWeight: 'bold', color: '#212121' },
+  price: { fontSize: 14, color: '#D32F2F', fontWeight: 'bold', marginTop: 4 },
 });
