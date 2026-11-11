@@ -4,23 +4,29 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import StarRating from '../src/components/StarRating';
 
+const phoneImages = {
+  blue: require('../assets/vsmart-blue.png'),
+  red: require('../assets/vsmart-red.png'),
+  black: require('../assets/vsmart-black.png'),
+  white: require('../assets/vsmart-white.png'),
+};
+
 export default function ProductScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ color?: string }>();
 
-  const selectedColor = (params.color as 'blue' | 'red' | 'black' | 'white') || 'blue';
-
-  const phoneImages = {
-    blue: require('../assets/vsmart-blue.png'),
-    red: require('../assets/vsmart-red.png'),
-    black: require('../assets/vsmart-black.png'),
-    white: require('../assets/vsmart-white.png'),
-  };
+  const selectedColor = (params.color as keyof typeof phoneImages) || 'blue';
+  const currentImage = phoneImages[selectedColor] || phoneImages.blue;
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.imageBox}>
-        <Image source={phoneImages[selectedColor]} style={styles.phoneImg} resizeMode="contain" />
+        <Image 
+          key={selectedColor}
+          source={currentImage} 
+          style={styles.phoneImg} 
+          resizeMode="contain" 
+        />
       </View>
 
       <View style={styles.content}>
@@ -55,8 +61,8 @@ export default function ProductScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FFF' },
-  imageBox: { flex: 1.1, justifyContent: 'center', alignItems: 'center', padding: 16 },
-  phoneImg: { width: '80%', height: '100%' },
+  imageBox: { height: 320, width: '100%', justifyContent: 'center', alignItems: 'center', padding: 16 },
+  phoneImg: { width: '100%', height: '100%' },
   content: { flex: 1, paddingHorizontal: 20 },
   title: { fontSize: 15, fontWeight: 'bold', color: '#000' },
   priceRow: { flexDirection: 'row', alignItems: 'center', marginVertical: 8 },

@@ -3,6 +3,20 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView } from 'r
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import ColorOption from '../../src/components/ColorOption';
 
+const phoneImages = {
+  blue: require('../../assets/vsmart-blue.png'),
+  red: require('../../assets/vsmart-red.png'),
+  black: require('../../assets/vsmart-black.png'),
+  white: require('../../assets/vsmart-white.png'),
+};
+
+const colorMeta = {
+  white: { label: 'bạc / trắng', hex: '#C5F1FB' },
+  red: { label: 'đỏ', hex: '#F30D0D' },
+  black: { label: 'đen', hex: '#000000' },
+  blue: { label: 'xanh', hex: '#234896' },
+};
+
 export default function SelectPhoneScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ currentColor?: string }>();
@@ -11,24 +25,19 @@ export default function SelectPhoneScreen() {
     (params.currentColor as any) || 'blue'
   );
 
-  const phoneImages = {
-    blue: require('../../assets/vsmart-blue.png'),
-    red: require('../../assets/vsmart-red.png'),
-    black: require('../../assets/vsmart-black.png'),
-    white: require('../../assets/vsmart-white.png'),
-  };
-
-  const colorMeta = {
-    white: { label: 'bạc / trắng', hex: '#C5F1FB' },
-    red: { label: 'đỏ', hex: '#F30D0D' },
-    black: { label: 'đen', hex: '#000000' },
-    blue: { label: 'xanh', hex: '#234896' },
-  };
+  const currentImage = phoneImages[color] || phoneImages.blue;
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topInfo}>
-        <Image source={phoneImages[color]} style={styles.thumb} resizeMode="contain" />
+        <View style={styles.thumbWrapper}>
+          <Image 
+            key={color}
+            source={currentImage} 
+            style={styles.thumb} 
+            resizeMode="contain" 
+          />
+        </View>
         <View style={styles.meta}>
           <Text style={styles.name}>Điện Thoại Vsmart Joy 3</Text>
           <Text style={styles.name}>Hàng chính hãng</Text>
@@ -62,7 +71,8 @@ export default function SelectPhoneScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FFF' },
   topInfo: { flexDirection: 'row', padding: 14, backgroundColor: '#FFF' },
-  thumb: { width: 100, height: 120 },
+  thumbWrapper: { width: 100, height: 120, justifyContent: 'center', alignItems: 'center' },
+  thumb: { width: '100%', height: '100%' },
   meta: { flex: 1, marginLeft: 14, justifyContent: 'space-between' },
   name: { fontSize: 14, color: '#000' },
   colorTag: { fontSize: 13, color: '#333' },
